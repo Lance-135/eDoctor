@@ -23,7 +23,7 @@ const Home = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setResponse("Processing...") //placeholder till the actual reponse is received
     // FormData to send the image as a file
     const formData = new FormData();
     formData.append('image', image);

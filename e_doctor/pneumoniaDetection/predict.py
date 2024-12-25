@@ -1,10 +1,11 @@
 import os
-from django.http import JsonResponse
 import numpy as np
 import tensorflow as tf
 from PIL import Image
 
-
+#load model 
+filePath = "D:/AustinKarki/repos/pneumoniaDetection/trainedModels/model1/model40.h5"
+model = tf.keras.models.load_model(filePath)
 
 def predictImage(image):
     if image:

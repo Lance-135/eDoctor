@@ -14,7 +14,7 @@ class Predict(APIView):
     def post(self, request):
         if request.FILES.get('image'): 
             image = request.FILES['image']
-            result = predict.predictImage(image)[0][0]
+            result = predict.predictImage(image)[0][0] 
             prediction = "Normal" if result < 0.5 else "Pneumonia"
             return Response({"prediction": f"{prediction} with result {result: 0.4f}"})
         else:

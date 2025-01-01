@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
+from datetime import timedelta
 import os
 from decouple import config
 from pathlib import Path
@@ -58,8 +59,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'pneumoniaDetection.apps.PneumoniadetectionConfig',
+    'authenticator.apps.AuthenticatorConfig'
     'corsheaders',
-    'rest_framework'
+    'rest_framework', 
+    'rest_framework_simplejwt'
+
 ]
 
 MIDDLEWARE = [
@@ -98,8 +102,6 @@ WSGI_APPLICATION = 'e_doctor.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 tmpPostgres =urlparse(config("DATABASE_URL")) 
-print(tmpPostgres)
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -159,3 +161,23 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# Rest Framework - jwt authentication
+jwt_secret_key = config("jwt_secret_key")
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication'
+    ]
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),  
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=3),    
+    'ROTATE_REFRESH_TOKENS': False,                  # Whether to rotate refresh tokens on each request
+    'BLACKLIST_AFTER_ROTATION': True,                # Blacklist the old refresh token after rotation
+    'ALGORITHM': 'HS256',                            # algorithm used to sign the JWT
+    'SIGNING_KEY': jwt_secret_key,                    # Secret key to sign the JWT
+    'VERIFYING_KEY': None                            # Optionally provide a public key for signature verification
+}

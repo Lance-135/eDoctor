@@ -59,7 +59,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'pneumoniaDetection.apps.PneumoniadetectionConfig',
-    'authenticator.apps.AuthenticatorConfig'
+    'authenticator.apps.AuthenticatorConfig',
     'corsheaders',
     'rest_framework', 
     'rest_framework_simplejwt'

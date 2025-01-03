@@ -2,9 +2,12 @@
 import React, { useState } from "react";
 import "../css/signup.css"; // For styling, add a CSS file
 import axios from "axios";
+import {useNavigate} from "react-router-dom";
+import Navbar from "../components/navBar";
 
 const Signup = () => {
   // State variables for form inputs
+  const navigate = useNavigate()
   const [formData, setFormData] = useState({
     user_name: "",
     email: "",
@@ -64,8 +67,13 @@ const Signup = () => {
         const response = await axios.post("http://127.0.0.1:8000/auth/signup/", formData, {
             withCredentials: true
         })
+        localStorage.setItem("user", JSON.stringify({
+          user_name : response.data.user_name,
+          email : response.data.email
+        }))
         setFormData({ user_name: "", email: "", password: "", confirmPassword: "" });
-        alert(response.data.message);
+        alert(response.data.email);
+        navigate("/home")
       }catch(e){
         alert(e.data.error)
       }
@@ -73,6 +81,8 @@ const Signup = () => {
   };
 
   return (
+    <>
+    <Navbar/>
     <div className="signup-container">
       <h2>Welcome to Our Platform</h2>
       <p className="signup-description">Create your account to get started!</p>
@@ -135,6 +145,7 @@ const Signup = () => {
       </form>
       <p className="signup-footer">Already have an account? <a href="#">Login here</a></p>
     </div>
+    </>
   );
 };
 

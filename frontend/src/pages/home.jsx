@@ -48,7 +48,7 @@ const Home = () => {
         <h2>Features</h2>
         <div className="features">
           <div className="feature">
-            <h3>Upload an Image</h3>
+            <h3>Pneumonia Detector</h3>
             <form onSubmit={handleSubmit}>
               <input
                 type="file"

@@ -1,18 +1,47 @@
 // src/components/Navbar.js
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import '../css/navBar.css'; // Import CSS for styling
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const Navbar = () => {
+  const navigate = useNavigate()
+
+  const getUser = ()=>{
+    const current_user = localStorage.getItem("user")
+    if (current_user == null){
+      return false
+    }
+    else{
+      
+      return true
+    }
+  }
+
+  const handleLogout =async () =>{
+    try {
+      const response = await axios.post("http://127.0.0.1:8000/auth/logout/")
+      console.log(response.data.message)
+      localStorage.clear()
+      alrert(response.data.message)
+      navigate("/home")
+    } catch (error) {
+      alert(error.error)
+    }
+  }
+
   return (
     <nav className="navbar">
       <div className="navbar-container">
-        <a href="/" className="navbar-logo">
+        <Link to="/home" className="navbar-logo">
           Pneumonia Detection
-        </a>
+        </Link>
         <ul className="navbar-links">
           <li>
-            <Link to= "/" className='navbar-link'>Home</Link>
+            <Link to= "/home" className='navbar-link'>Home</Link>
+          </li>
+          <li>
+            {getUser() ? <Link to= "/home" className='navbar-link'>Profile</Link> : <Link to="/" className="navbar-link">Login/SignUp</Link>}
           </li>
           <li>
             <a href="#about" className="navbar-link">About</a>
@@ -21,7 +50,8 @@ const Navbar = () => {
             <a href="#services" className="navbar-link">Services</a>
           </li>
           <li>
-            <a href="#contact" className="navbar-link">Contact</a>
+            {getUser()? 
+            <button className="logout-btn" onClick={handleLogout}>Logout</button>:<Link to="/home" className="navbar-link">contacts</Link>}
           </li>
         </ul>
       </div>

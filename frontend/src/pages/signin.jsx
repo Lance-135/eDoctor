@@ -1,18 +1,17 @@
 // Import necessary libraries
 import React, { useState } from "react";
-import "../css/signup.css"; // For styling, add a CSS file
+import "../css/signin.css"; // For styling, add a CSS file
 import axios from "axios";
 import {useNavigate, Link} from "react-router-dom";
 import Navbar from "../components/navBar";
 
-const Signup = () => {
+const SignIn = () => {
   // State variables for form inputs
   const navigate = useNavigate()
   const [formData, setFormData] = useState({
     user_name: "",
-    email: "",
+    // email: "",
     password: "",
-    confirmPassword: "",
   });
 
   const [errors, setErrors] = useState({});
@@ -47,26 +46,22 @@ const Signup = () => {
       errors.password = "Password must be at least 6 characters.";
     }
 
-    if (formData.password !== formData.confirmPassword) {
-      errors.confirmPassword = "Passwords do not match.";
-    }
-
     return errors;
   };
 
   // Handle form submission
   const handleSubmit =async (e) => {
     e.preventDefault();
-
     const validationErrors = validate();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
     } else {
       setErrors({});
       try{
-        const response = await axios.post("http://127.0.0.1:8000/auth/signup/", formData, {
-            withCredentials: true
+        const response = await axios.post("http://127.0.0.1:8000/auth/login/", formData, {
+            withCredentials: false  
         })
+        console.log(response.data)
         localStorage.setItem("user", JSON.stringify({
           user_name : response.data.user_name,
           email : response.data.email
@@ -75,7 +70,7 @@ const Signup = () => {
         alert(response.data.email);
         navigate("/home")
       }catch(e){
-        alert(e.data.error)
+        alert(e.data)
       }
    }
   };
@@ -83,10 +78,10 @@ const Signup = () => {
   return (
     <>
     <Navbar/>
-    <div className="signup-container">
+    <div className="signin-container">
       <h2>Welcome to Our Platform</h2>
-      <p className="signup-description">Create your account to get started!</p>
-      <form onSubmit={handleSubmit} className="signup-form">
+      <p className="signin-description">Log In</p>
+      <form onSubmit={handleSubmit} className="signin-form">
         <div className="form-group">
           <label htmlFor="name">User Name</label>
           <input
@@ -125,28 +120,12 @@ const Signup = () => {
           />
           {errors.password && <small className="error">{errors.password}</small>}
         </div>
-
-        <div className="form-group">
-          <label htmlFor="confirmPassword">Confirm Password</label>
-          <input
-            type="password"
-            id="confirmPassword"
-            name="confirmPassword"
-            value={formData.confirmPassword}
-            onChange={handleChange}
-            placeholder="Confirm your password"
-          />
-          {errors.confirmPassword && (
-            <small className="error">{errors.confirmPassword}</small>
-          )}
-        </div>
-
-        <button type="submit" className="signup-btn">Create Account</button>
+        <button type="submit" className="signin-btn">Login</button>
       </form>
-      <p className="signup-footer">Already have an account? <Link to="/signIn">Login here</Link></p>
+      <p className="signin-footer">Don't have an account? <Link to="/">Signup here</Link></p>
     </div>
     </>
   );
 };
 
-export default Signup;
+export default SignIn;

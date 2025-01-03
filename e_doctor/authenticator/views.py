@@ -1,4 +1,5 @@
 from email import message
+from urllib import response
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate
 from rest_framework.views import APIView
@@ -6,7 +7,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
-
+from rest_framework_simplejwt import views
 
 
 @api_view(["POST"])
@@ -42,14 +43,48 @@ def signUpView(request):
             return response
         except Exception as e: 
             return Response({"error": str(e)},status= status.HTTP_500_INTERNAL_SERVER_ERROR)
-        
+
+# view to handle login
+@api_view(["POST"])
+def loginView(request):
+    if request.method == "POST":
+
+        try:
+            user_name = request.data["user_name"]
+            password  = request.data["password"]
+            user = authenticate(request, username = user_name, password = password)
+            if not user: 
+                return Response({"message": "Login failed"}, status= status.HTTP_404_NOT_FOUND)
+            else:
+                refresh = RefreshToken.for_user(user)
+                response = Response({
+                    "user_name": user.username,
+                    "email": user.email
+                },status=status.HTTP_202_ACCEPTED)
+                response.set_cookie(
+                    key="jwt_token",
+                    value= str(refresh),
+                    max_age=3600,
+                    path="/",
+                    secure= True,
+                    samesite=None,
+                    httponly=True
+                )
+                print(response)
+                return response
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 # view to logout
 @api_view(["POST"])
 def logoutView(request):
     if request.method == "POST":
         try:
             response = Response({"message": "logout successful"}, status=status.HTTP_200_OK)
-            response.delete_cookie("jwt_token")
+            response.delete_cookie(
+                key= "jwt_token",
+                path="/",
+                )
             return response
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

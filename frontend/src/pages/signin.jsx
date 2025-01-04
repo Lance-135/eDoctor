@@ -64,8 +64,9 @@ const SignIn = () => {
         console.log(response.data)
         localStorage.setItem("user", JSON.stringify({
           user_name : response.data.user_name,
-          email : response.data.email
+          email : response.data.email,
         }))
+        localStorage.setItem("jwt_token", response.data.jwt_token)
         setFormData({ user_name: "", email: "", password: "", confirmPassword: "" });
         alert(response.data.email);
         navigate("/home")

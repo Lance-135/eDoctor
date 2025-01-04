@@ -37,8 +37,8 @@ def signUpView(request):
                 max_age=7200,
                 httponly= True, 
                 path= '/', 
-                secure= True, 
-                samesite= None
+                secure= False, 
+                samesite= "lax"
             )
             return response
         except Exception as e: 
@@ -48,10 +48,11 @@ def signUpView(request):
 @api_view(["POST"])
 def loginView(request):
     if request.method == "POST":
-
         try:
-            user_name = request.data["user_name"]
-            password  = request.data["password"]
+            user_name= request.data["user_name"]
+            print(user_name)
+            password = request.data["password"]
+            print(user_name, password)
             user = authenticate(request, username = user_name, password = password)
             if not user: 
                 return Response({"message": "Login failed"}, status= status.HTTP_404_NOT_FOUND)
@@ -59,15 +60,16 @@ def loginView(request):
                 refresh = RefreshToken.for_user(user)
                 response = Response({
                     "user_name": user.username,
-                    "email": user.email
+                    "email": user.email,
+                    "jwt_token": str(refresh)
                 },status=status.HTTP_202_ACCEPTED)
                 response.set_cookie(
                     key="jwt_token",
                     value= str(refresh),
                     max_age=3600,
                     path="/",
-                    secure= True,
-                    samesite=None,
+                    secure= False,
+                    samesite="Lax",
                     httponly=True
                 )
                 print(response)

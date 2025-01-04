@@ -20,7 +20,7 @@ const Navbar = () => {
 
   const handleLogout =async () =>{
     try {
-      const response = await axios.post("http://127.0.0.1:8000/auth/logout/",null, {
+      const response = await axios.post("http://127.0.0.1:8000/auth/logout/",null,{
         withCredentials: true
       })
       console.log(response.data.message)

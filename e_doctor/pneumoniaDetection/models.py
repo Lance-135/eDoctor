@@ -6,3 +6,6 @@ class Prediction(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name= "predictions")
     image = models.CharField() # dunno if this should be here but for now why not 
     result = models.CharField(max_length = 30)
+
+    def __str__(self):
+        return self.owner

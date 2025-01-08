@@ -2,16 +2,18 @@ from models import Prediction
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework import response, status
 
 
-class Prediction(APIView):
+class AddPredictionView(APIView):
     permission_classes = [IsAuthenticated]
     authentication_classes = [JWTAuthentication]
 
     def post(self, request):
         try:
             user = request.user
-            
-            return 
-        except Exception:
-            return 
+            prediction = Prediction.objects.create(owner = user.id, image = '' , result = "nothing")
+            print(prediction)
+            return response.Response({"message": "prediction added"}, status = status.HTTP_201_CREATED)
+        except Exception as e:
+            return response.Response({"error": str(e)} , status=status.HTTP_409_CONFLICT)

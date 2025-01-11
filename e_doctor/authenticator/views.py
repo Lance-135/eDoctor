@@ -4,11 +4,12 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate
 from rest_framework.views import APIView
 from rest_framework import status
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt import views
-
+from rest_framework.permissions import IsAuthenticated
+from django.contrib.auth.hashers import check_password
 
 @api_view(["POST"])
 def signUpView(request):
@@ -82,6 +83,9 @@ def loginView(request):
 def logoutView(request):
     if request.method == "POST":
         try:
+            jwt_token = request.data['jwt_token']
+            token = RefreshToken(jwt_token["refresh_token"])
+            token.blacklist()
             response = Response({"message": "logout successful"}, status=status.HTTP_200_OK)
             response.delete_cookie(
                 key= "jwt_token",
@@ -92,3 +96,27 @@ def logoutView(request):
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     else:
         return Response(status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def changePasswordView(request):
+    try:
+        user = request.user
+        data = request.data
+
+        current_password = data.get("current_password")
+        new_password = data.get("new_password")
+
+        if not current_password or not new_password:
+            return Response({"error": "Both current and new passwords are required."}, status=status.HTTP_400_BAD_REQUEST)
+
+        if not check_password(current_password, user.password):
+            return Response({"error": "Current password is incorrect."}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Set the new password
+        user.set_password(new_password)
+        user.save()
+
+        return Response({"message": "Password updated successfully."}, status=status.HTTP_200_OK)
+    except Exception as e: 
+        return Response({"error": str(e)}, status = status.HTTP_500_INTERNAL_SERVER_ERROR)

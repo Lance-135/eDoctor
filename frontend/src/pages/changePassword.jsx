@@ -19,7 +19,7 @@ const ChangePassword = () => {
 
     try {
       const response = await axios.post(
-        "/api/change-password", // not created yet
+        "http://127.0.0.1:8000/auth/changePassword/", // not created yet
         {
           current_password: currentPassword,
           new_password: newPassword,

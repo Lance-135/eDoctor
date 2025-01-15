@@ -14,7 +14,7 @@ const UserProfile = () => {
     useEffect(() => {
         token = localStorage.getItem("jwt_token")
         if (token == null){
-            alert("not not found")
+            alert("not not found") // remove after testing the code 
         }
         else {
             setJwt(token)

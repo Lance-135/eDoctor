@@ -7,5 +7,6 @@ urlpatterns = [
     path('login/', views.loginView), # so it basically verifies the user and then creates a token for him
     path('token/refresh', TokenRefreshView.as_view(), name = 'token_refresh'),
     path('signup/', views.signUpView),
-    path('logout/', views.logoutView)
+    path('logout/', views.logoutView), 
+    path('changePassword/', views.changePasswordView)
 ]

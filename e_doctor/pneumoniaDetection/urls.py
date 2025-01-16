@@ -7,5 +7,5 @@ urlpatterns = [
     path("", views.loadModel),
     # path("signup/", authenticate.signUpView),
     # path("signin/", authenticate.signInView),
-    path("prediction/", database.AddPredictionView.as_view())
+    path("prediction/", database.PredictionView.as_view())
 ]

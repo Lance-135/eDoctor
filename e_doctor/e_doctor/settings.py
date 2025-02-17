@@ -177,8 +177,8 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),  
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=3),    
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=20),  
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),    
     'ROTATE_REFRESH_TOKENS': False,                  # Whether to rotate refresh tokens on each request
     'BLACKLIST_AFTER_ROTATION': True,                # Blacklist the old refresh token after rotation
     'ALGORITHM': 'HS256',                            # algorithm used to sign the JWT

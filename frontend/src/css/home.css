@@ -2,7 +2,8 @@
 .home-container {
     text-align: center;
     font-family: Arial, sans-serif;
-    padding: 2px;
+    padding: 2rem;
+    background-color: #f4f4f4; /* Light background */
   }
   
   .home-header {
@@ -28,12 +29,17 @@
   }
   
   .feature {
-    background-color: #f8f9fa;
+    background-color: #ffffff; /* White background for features */
     border: 1px solid #ddd;
     border-radius: 8px;
     padding: 20px;
     width: 250px;
     box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+  }
+  
+  .feature:hover {
+    transform: translateY(-5px); /* Lift effect on hover */
   }
   
   .feature h3 {
@@ -47,6 +53,21 @@
     background-color: #f1f1f1;
     color: #555;
   }
+  
+  .predict-btn {
+    background-color: #3498db; /* Button color */
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .predict-btn:hover {
+    background-color: #2980b9; /* Darker on hover */
+  }
+  
   .image-preview {
     max-width: 100%;
     height: auto;

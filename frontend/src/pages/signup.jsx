@@ -80,7 +80,6 @@ const Signup = () => {
   };
 
   return (
-    <>
     <div className="signup-container">
       <h2>Welcome to Our Platform</h2>
       <p className="signup-description">Create your account to get started!</p>
@@ -143,7 +142,6 @@ const Signup = () => {
       </form>
       <p className="signup-footer">Already have an account? <Link to="/signIn">Login here</Link></p>
     </div>
-    </>
   );
 };
 

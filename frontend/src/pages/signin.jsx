@@ -76,7 +76,6 @@ const SignIn = () => {
   };
 
   return (
-    <>
     <div className="signin-container">
       <h2>Welcome to Our Platform</h2>
       <p className="signin-description">Log In</p>
@@ -123,7 +122,6 @@ const SignIn = () => {
       </form>
       <p className="signin-footer">Don't have an account? <Link to="/">Signup here</Link></p>
     </div>
-    </>
   );
 };
 

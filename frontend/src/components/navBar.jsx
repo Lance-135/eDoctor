@@ -7,6 +7,7 @@ import axios from 'axios';
 const NavBar = () => {
   const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   useEffect(() => {
     const user = localStorage.getItem("user");
@@ -37,9 +38,7 @@ const NavBar = () => {
             <>
               <Link to="/home" className="nav-link">Dashboard</Link>
               <Link to="/profile" className="nav-link">Profile</Link>
-              <button onClick={handleLogout} className="nav-link logout-btn">
-                Logout
-              </button>
+              <button onClick={handleLogout} className="nav-link logout-btn">Logout</button>
             </>
           ) : (
             <>

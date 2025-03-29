@@ -51,9 +51,10 @@ const Home = () => {
                 type="file"
                 accept="image/*"
                 onChange={handleFileChange}
+                className="file-input"
               />
               {imagePreview && <img src={imagePreview} alt="Preview" className="image-preview" />}
-              <button type="submit">Predict</button>
+              <button type="submit" className="predict-btn">Predict</button>
             </form>
             <p>{response}</p>
           </div>

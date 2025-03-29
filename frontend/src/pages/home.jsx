@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import '../css/home.css'; // Import styles if you create a separate CSS file.
-import Navbar from '../components/navBar';
 import axios from "axios";
 import Cookies from 'js-cookie';
 
@@ -30,7 +29,6 @@ const Home = () => {
 
     try {
       const response = await axios.post("http://127.0.0.1:8000/pnDetection/predict/", formData, {
-        
         withCredentials: true, 
       });
 
@@ -43,7 +41,6 @@ const Home = () => {
 
   return (
     <div className="home-container">
-      <Navbar />
       <section className="features-section">
         <h2>Features</h2>
         <div className="features">

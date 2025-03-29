@@ -1,63 +1,57 @@
 // src/components/Navbar.js
-import React, {useState, useEffect} from 'react';
-import '../css/navBar.css'; // Import CSS for styling
+import React, { useState, useEffect } from 'react';
+import './navBar.css'; // Fix the import path
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-const Navbar = () => {
-  const navigate = useNavigate()
+const NavBar = () => {
+  const navigate = useNavigate();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  const getUser = ()=>{
-    const current_user = localStorage.getItem("user")
-    if (current_user == null){
-      return false
-    }
-    else{
-      
-      return true
-    }
-  }
+  useEffect(() => {
+    const user = localStorage.getItem("user");
+    setIsAuthenticated(!!user);
+  }, []);
 
-  const handleLogout =async () =>{
+  const handleLogout = async () => {
     try {
-      const response = await axios.post("http://127.0.0.1:8000/auth/logout/",null,{
+      await axios.post("http://127.0.0.1:8000/auth/logout/", null, {
         withCredentials: true
-      })
-      console.log(response.data.message)
-      localStorage.clear()
-      navigate("/")
+      });
+      localStorage.clear();
+      setIsAuthenticated(false);
+      navigate("/");
     } catch (error) {
-      alert(error.error)
+      console.error("Logout error:", error);
     }
-  }
+  };
 
   return (
     <nav className="navbar">
       <div className="navbar-container">
         <Link to="/home" className="navbar-logo">
-          Pneumonia Detection
+          <span className="logo-text">Pneumonia Detection</span>
         </Link>
-        <ul className="navbar-links">
-          <li>
-            <Link to= "/home" className='navbar-link'>Home</Link>
-          </li>
-          <li>
-            {getUser() ? <Link to= "/home" className='navbar-link'>Profile</Link> : <Link to="/" className="navbar-link">Login/SignUp</Link>}
-          </li>
-          <li>
-            <a href="#about" className="navbar-link">About</a>
-          </li>
-          <li>
-            <a href="#services" className="navbar-link">Services</a>
-          </li>
-          <li>
-            {getUser()? 
-            <button className="logout-btn" onClick={handleLogout}>Logout</button>:<Link to="/home" className="navbar-link">contacts</Link>}
-          </li>
-        </ul>
+        <div className="navbar-links">
+          {isAuthenticated ? (
+            <>
+              <Link to="/home" className="nav-link">Dashboard</Link>
+              <Link to="/profile" className="nav-link">Profile</Link>
+              <button onClick={handleLogout} className="nav-link logout-btn">
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <Link to="/home" className="nav-link">Home</Link>
+              <Link to="/signin" className="nav-link">Sign In</Link>
+              <Link to="/signup" className="nav-link signup-btn">Sign Up</Link>
+            </>
+          )}
+        </div>
       </div>
     </nav>
   );
 };
 
-export default Navbar;
+export default NavBar;

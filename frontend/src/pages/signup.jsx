@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import "../css/signup.css"; // For styling, add a CSS file
 import axios from "axios";
 import {useNavigate, Link} from "react-router-dom";
-import Navbar from "../components/navBar";
 
 const Signup = () => {
   // State variables for form inputs
@@ -82,7 +81,6 @@ const Signup = () => {
 
   return (
     <>
-    <Navbar/>
     <div className="signup-container">
       <h2>Welcome to Our Platform</h2>
       <p className="signup-description">Create your account to get started!</p>

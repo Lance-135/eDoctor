@@ -32,10 +32,10 @@ ALLOWED_HOSTS = []
 
 # Cors 
 CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:5173'
-]
-
+# CORS_ALLOWED_ORIGINS = [
+#     'http://localhost:5173'
+# ]
+CORS_ALLOW_ALL_ORIGINS = True
 # Csrf trusted origins
 CSRF_TRUSTED_ORIGINS = [
     'http://localhost:5173',
@@ -168,12 +168,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 jwt_secret_key = config("jwt_secret_key")
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework_simplejwt.authentication.JWTAuthentication'
-    ],
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
-    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [],
+    'DEFAULT_PERMISSION_CLASSES': [],
 }
 
 SIMPLE_JWT = {

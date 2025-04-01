@@ -1,5 +1,5 @@
 from pneumoniaDetection.serializers import PredictionSerializer
-from models import Prediction
+from pneumoniaDetection.models import Prediction
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication

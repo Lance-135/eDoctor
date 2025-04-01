@@ -2,6 +2,7 @@ from email import message
 from urllib import response
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate
+import jwt
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
@@ -14,14 +15,16 @@ from django.contrib.auth.hashers import check_password
 @api_view(["POST"])
 def signUpView(request):
     if request.method == 'POST':
-        user_name = request.data['user_name']
-        email = request.data['email']
-        password = request.data['password']
+        user_name = request.data.get("user_name")
+        email = request.data.get("email")
+        password = request.data.get("password")
 
-        if User.objects.filter(email = email).exists():
+        if User.objects.filter(email = email, username = user_name).exists():
+
             return Response({"error": "email or username already in use"}, status = status.HTTP_403_FORBIDDEN)
 
         try:
+            print(user_name, email, password)
             user = User.objects.create_user(username=user_name, email=email, password= password)
             user.save()
             refresh = RefreshToken.for_user(user)
@@ -83,16 +86,18 @@ def loginView(request):
 def logoutView(request):
     if request.method == "POST":
         try:
-            jwt_token = request.data['jwt_token']
-            token = RefreshToken(jwt_token["refresh_token"])
+            jwt_token = request.data.get("jwt_token")
+            print(jwt_token)
+            token = RefreshToken(jwt_token)
             token.blacklist()
             response = Response({"message": "logout successful"}, status=status.HTTP_200_OK)
-            response.delete_cookie(
-                key= "jwt_token",
-                path="/",
-                )
+            # response.delete_cookie(
+            #     key= "jwt_token",
+            #     path="/",
+            #     )
             return response
         except Exception as e:
+            print(e)
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     else:
         return Response(status=status.HTTP_400_BAD_REQUEST)

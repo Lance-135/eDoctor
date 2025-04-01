@@ -1,8 +1,6 @@
 from rest_framework import serializers
-from models import Prediction
-
-
+from pneumoniaDetection.models import Prediction
 class PredictionSerializer(serializers.ModelSerializer):
     class Meta: 
-        model = Prediction
+        # model = Prediction
         fileds = ['id', 'owner', 'image', 'result']

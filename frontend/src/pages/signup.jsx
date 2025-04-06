@@ -1,11 +1,13 @@
 // Import necessary libraries
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import "../css/signup.css"; // For styling, add a CSS file
 import axios from "axios";
 import {useNavigate, Link} from "react-router-dom";
+import AuthContext from "../AuthContext";
 
 const Signup = () => {
   // State variables for form inputs
+  const { isAuthenticated, signUp } = useContext(AuthContext);
   const navigate = useNavigate()
   const [formData, setFormData] = useState({
     user_name: "",
@@ -62,19 +64,22 @@ const Signup = () => {
       setErrors(validationErrors);
     } else {
       setErrors({});
+      console.log(formData)
       try{
         const response = await axios.post("http://127.0.0.1:8000/auth/signup/", formData, {
-            withCredentials: true
+            withCredentials: false
         })
-        localStorage.setItem("user", JSON.stringify({
-          user_name : response.data.user_name,
-          email : response.data.email
-        }))
+        // localStorage.setItem("user", JSON.stringify({
+        //   user_name : response.data.user_name,
+        //   email : response.data.email,
+        // }))
+        // localStorage.setItem("jwt_token", response.data.refresh_token)
+        signUp({user_name: response.data.user_name, email: response.data.email, jwt_token: response.data.refresh_token})
         setFormData({ user_name: "", email: "", password: "", confirmPassword: "" });
         alert(response.data.email);
         navigate("/home")
       }catch(e){
-        alert(e.data.error)
+        alert(e)
       }
    }
   };

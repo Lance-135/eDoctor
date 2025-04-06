@@ -5,10 +5,12 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Signup from './pages/signup'
 import SignIn from './pages/signin'
 import NavBar from './components/navBar'
+import { AuthProvider } from './AuthContext'
 
 function App() {
   return (
-    <Router>
+    <AuthProvider>
+      <Router>
       <div className="app-container">
         <NavBar />
         <main className="main-content">
@@ -16,10 +18,12 @@ function App() {
             <Route path="/" element={<Signup />} />
             <Route path="/home" element={<Home />} />
             <Route path="/signin" element={<SignIn />} />
+            <Route path = "/signup" element = {<Signup/>}/>
           </Routes>
         </main>
       </div>
-    </Router>
+      </Router>
+    </AuthProvider>
   )
 }
 

@@ -1,26 +1,23 @@
 // src/components/Navbar.js
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import './navBar.css'; // Fix the import path
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import AuthContext from '../AuthContext';
 
 const NavBar = () => {
+  const {isAuthenticated, logout} = useContext(AuthContext)
   const navigate = useNavigate();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  useEffect(() => {
-    const user = localStorage.getItem("user");
-    setIsAuthenticated(!!user);
-  }, []);
-
   const handleLogout = async () => {
+    const jwt_token = localStorage.getItem("jwt_token")
     try {
-      await axios.post("http://127.0.0.1:8000/auth/logout/", null, {
+      await axios.post("http://127.0.0.1:8000/auth/logout/", {"jwt_token": jwt_token}, {
         withCredentials: true
       });
-      localStorage.clear();
-      setIsAuthenticated(false);
+      // localStorage.clear();
+      logout();
       navigate("/");
     } catch (error) {
       console.error("Logout error:", error);

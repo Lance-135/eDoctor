@@ -40,6 +40,7 @@ const Home = () => {
   };
 
   return (
+    
     <div className="home-container">
       <section className="features-section">
         <h2>Features</h2>

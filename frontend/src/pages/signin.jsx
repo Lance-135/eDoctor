@@ -1,11 +1,13 @@
 // Import necessary libraries
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import "../css/signin.css"; // For styling, add a CSS file
 import axios from "axios";
 import {useNavigate, Link} from "react-router-dom";
+import AuthContext from "../AuthContext";
 
 const SignIn = () => {
   // State variables for form inputs
+  const {login} = useContext(AuthContext)
   const navigate = useNavigate()
   const [formData, setFormData] = useState({
     user_name: "",
@@ -61,11 +63,12 @@ const SignIn = () => {
             withCredentials: false  
         })
         console.log(response.data)
-        localStorage.setItem("user", JSON.stringify({
-          user_name : response.data.user_name,
-          email : response.data.email,
-        }))
-        localStorage.setItem("jwt_token", response.data.jwt_token)
+        // localStorage.setItem("user", JSON.stringify({
+        //   user_name : response.data.user_name,
+        //   email : response.data.email,
+        // }))
+        // localStorage.setItem("jwt_token", response.data.jwt_token)
+        login({user_name: response.data.user_name, email: response.data.email, jwt_token: response.data.jwt_token})
         setFormData({ user_name: "", email: "", password: "", confirmPassword: "" });
         alert(response.data.email);
         navigate("/home")

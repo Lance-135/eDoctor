@@ -15,7 +15,7 @@ class Predict(APIView):
         if request.FILES.get('image'): 
             image = request.FILES['image']
             result = predict.predictImage(image)[0][0] 
-            prediction = "Normal" if result < 0.5 else "Pneumonia"
-            return Response({"prediction": f"{prediction} with result {result: 0.4f}"})
+            probability = result * 100
+            return Response({"prediction" : f"Probability of Pneumonia: {probability: 0.2f}%"})
         else:
             return Response({'error': "invallid request"}, status = 400)

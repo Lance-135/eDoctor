@@ -31,7 +31,6 @@ const Home = () => {
       const response = await axios.post("http://127.0.0.1:8000/pnDetection/predict/", formData, {
         withCredentials: true, 
       });
-
       setResponse(response.data.prediction); 
     } catch (error) {
       console.error("Error during prediction:", error);

@@ -26,7 +26,7 @@
   
   .navbar-link {
     color: white;
-    padding: 0 15px;
+    /* padding: 0 15px; */
     text-decoration: none;
     font-size: 18px;
     transition: background-color 0.3s;

@@ -4,7 +4,7 @@ import tensorflow as tf
 from PIL import Image
 
 #load model 
-filePath = "D:/AustinKarki/repos/pneumoniaDetection/trainedModels/model1/model40.h5"
+filePath = "./pneumoniaDetection/model40.h5"
 model = tf.keras.models.load_model(filePath)
 
 def predictImage(image):

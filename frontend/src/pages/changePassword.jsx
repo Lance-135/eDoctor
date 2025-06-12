@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
 import '../css/changePassword.css';
-import config from '../config'
 
 
 const ChangePassword = () => {

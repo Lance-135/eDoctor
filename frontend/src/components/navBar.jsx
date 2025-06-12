@@ -4,16 +4,16 @@ import './navBar.css'; // Fix the import path
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import AuthContext from '../AuthContext';
+import config from '../config.js'
 
 const NavBar = () => {
   const {isAuthenticated, logout} = useContext(AuthContext)
   const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
   const handleLogout = async () => {
     const jwt_token = localStorage.getItem("jwt_token")
     try {
-      await axios.post("http://127.0.0.1:8000/auth/logout/", {"jwt_token": jwt_token}, {
+      await axios.post(`${config.API_BASE_URL}/auth/logout/`, {"jwt_token": jwt_token}, {
         withCredentials: true
       });
       // localStorage.clear();

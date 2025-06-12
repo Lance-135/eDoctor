@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import '../css/home.css'; // Import styles if you create a separate CSS file.
 import axios from "axios";
 import Cookies from 'js-cookie';
-import config from "../config";
 
 const Home = () => {
   const [imagePreview, setImagePreview] = React.useState(null);

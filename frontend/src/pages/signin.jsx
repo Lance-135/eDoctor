@@ -4,7 +4,6 @@ import "../css/signin.css"; // For styling, add a CSS file
 import axios from "axios";
 import {useNavigate, Link} from "react-router-dom";
 import AuthContext from "../AuthContext";
-import config from "../config"
 
 const SignIn = () => {
   // State variables for form inputs

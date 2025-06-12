@@ -66,7 +66,7 @@ const Signup = () => {
       setErrors({});
       console.log(formData)
       try{
-        const response = await axios.post("http://127.0.0.1:8000/auth/signup/", formData, {
+        const response = await axios.post(`${config.API_BASE_URL}/auth/signup/`, formData, {
             withCredentials: false
         })
         // localStorage.setItem("user", JSON.stringify({

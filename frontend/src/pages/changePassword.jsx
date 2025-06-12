@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import '../css/changePassword.css';
+import config from '../config'
 
 
 const ChangePassword = () => {
@@ -19,7 +20,7 @@ const ChangePassword = () => {
 
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/auth/changePassword/", // not created yet
+        `${config.API_BASE_URL}/auth/changePassword/`, // not created yet
         {
           current_password: currentPassword,
           new_password: newPassword,

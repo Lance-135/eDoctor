@@ -4,6 +4,7 @@ import "../css/signin.css"; // For styling, add a CSS file
 import axios from "axios";
 import {useNavigate, Link} from "react-router-dom";
 import AuthContext from "../AuthContext";
+import config from "../config"
 
 const SignIn = () => {
   // State variables for form inputs
@@ -59,7 +60,7 @@ const SignIn = () => {
     } else {
       setErrors({});
       try{
-        const response = await axios.post("http://127.0.0.1:8000/auth/login/", formData, {
+        const response = await axios.post(`${config.API_BASE_URL}/auth/login/`, formData, {
             withCredentials: false  
         })
         console.log(response.data)

@@ -4,7 +4,7 @@ import tensorflow as tf
 from PIL import Image
 
 #load model 
-filePath = "./pneumoniaDetection/model40.h5"
+filePath = "./pneumoniaDetection/model_tf"
 _model = None
 def get_model():
     global _model

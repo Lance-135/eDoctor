@@ -1,4 +1,4 @@
 const config = {
-    API_BASE_URL : "https://edoctor.onrender.com:10000"
+    API_BASE_URL : "https://edoctor.onrender.com"
 }
 export default config;

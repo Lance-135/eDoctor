@@ -38,20 +38,20 @@ CORS_ALLOW_CREDENTIALS = True
 # CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOWED_ORIGINS = [
     'https://e-doctor-livid.vercel.app',
-    'http://localhost:5173',
+    # 'http://localhost:5173',
 ]
 # Csrf trusted origins
 CSRF_TRUSTED_ORIGINS = [
     'https://edoctor.onrender.com',
     'https://e-doctor-livid.vercel.app',
-    'http://localhost:5173',
-    'http://127.0.0.1:8000/'
+    # 'http://localhost:5173',
+    # 'http://127.0.0.1:8000/'
 ]
 CSRF_COOKIE_SECURE = False
 
 SESSION_COOKIE_SAMESITE = 'None'  # Allow cross-origin cookies
 # CSRF_COOKIE_SAMESITE = 'None'    # Required for CSRF
-CSRF_COOKIE_DOMAIN = '127.0.0.1'
+# CSRF_COOKIE_DOMAIN = '127.0.0.1'
 
 
 

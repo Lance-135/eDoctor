@@ -7,5 +7,6 @@ router.register(r'user', viewset= views.UserViewset) # will update it after crea
 
 
 urlpatterns = [
+    path('register/', views.RegisterView.as_view(), name = 'register'),
     path('', include(router.urls))
 ]

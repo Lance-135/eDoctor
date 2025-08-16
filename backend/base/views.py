@@ -19,6 +19,7 @@ class RegisterView(views.APIView):
         email = request.data.get('email')
         password = request.data.get('password')
         full_name = request.data.get('full_name')
+        print(full_name)
 
         try: 
             user = User.objects.create_user(email = email, password = password, full_name = full_name)

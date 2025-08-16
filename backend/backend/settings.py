@@ -11,9 +11,9 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
-
-
-from e_doctor.e_doctor.settings import REST_FRAMEWORK
+from datetime import timedelta
+from decouple import config
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-h5$m$*cb$l9c71khs=r$xa*xbo&rtcj9sw^3bq1bef#+=rv0*='
+SECRET_KEY = config('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -77,12 +77,14 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
-
+NEON_DATABASE_URL  = config("DATABASE_URL")
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    # 'local': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': BASE_DIR / 'db.sqlite3',
+    # },
+
+    'default':dj_database_url.parse(NEON_DATABASE_URL, ssl_require= True)
 }
 
 
@@ -139,6 +141,24 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES':(
-        'rest_framework.simplejwt.authentication.JWTAuthentication'
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     )
 }
+
+# jwt configuration 
+jwt_secret_key = config('JWT_SECRET_KEY')
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME" : timedelta(minutes= 5),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days= 1),
+    "ALGORITHM": "HS256",
+    "SIGNING_KEY": jwt_secret_key
+
+}
+
+
+# CORS CONFIGURATION 
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOWED_ORIGINS = [
+    'https://e-doctor-livid.vercel.app'
+]
+SESSION_COOKIE_SAMESITE = 'None'

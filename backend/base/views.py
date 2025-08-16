@@ -1,11 +1,11 @@
 from email import message
 from email.policy import strict
-from rest_framework import viewsets, permissions, views, response
+from http import HTTPStatus
+from rest_framework import viewsets, permissions, views, response, status
 from .models import User
 from .serializers import UserSerializer
 from django.contrib.auth import authenticate
 from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
-
 class UserViewset(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
@@ -20,22 +20,18 @@ class RegisterView(views.APIView):
         password = request.data.get('password')
         full_name = request.data.get('full_name')
 
-        # user = User.objects.create_user(email = email, password = password, full_name = full_name)
-
-        # if user: 
-        #     return user # actuall i want to set jwt token in the browser
-        # else:
-        #     return None # return an error
         try: 
-            user = User.objects.create_user(request.data)
-
+            user = User.objects.create_user(email = email, password = password, full_name = full_name)
+            print("user created")
             # generation tokens
             refresh_token = RefreshToken.for_user(user)
             access_token = str(refresh_token.access_token)
 
+            print("jwt generated")
+
             res = response.Response({
                 "message": "Registration successful"
-            })
+            }, status = status.HTTP_200_OK )
             res.set_cookie(
                 key= 'refresh_token',
                 value= refresh_token,
@@ -51,10 +47,9 @@ class RegisterView(views.APIView):
                 httponly= True, 
                 secure = True, 
                 samesite= "Strict",
-                max_age= 3600
-
             )
         except: 
             res = response.Response({
                 'error_message': 'Registration failed'
-            })
+            }, status= status.HTTP_400_BAD_REQUEST)
+        return res

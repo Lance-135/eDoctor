@@ -4,14 +4,14 @@ import "../css/signup.css"; // For styling, add a CSS file
 import axios from "axios";
 import {useNavigate, Link} from "react-router-dom";
 import AuthContext from "../AuthContext";
-import config from "../config";
+import devconfig from "../config";
 
 const Signup = () => {
   // State variables for form inputs
   const { isAuthenticated, signUp } = useContext(AuthContext);
   const navigate = useNavigate()
   const [formData, setFormData] = useState({
-    user_name: "",
+    full_name: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -29,11 +29,11 @@ const Signup = () => {
   const validate = () => {
     const errors = {};
 
-    if (!formData.user_name.trim()){
+    if (!formData.full_name.trim()){
         errors.name = "Name is required.";
-    } else if (5< formData.user_name.length >20){
+    } else if (5< formData.full_name.length >20){
         errors.name = "name must between 5 to 20 characters long"
-    } else if (/\s/.test(formData.user_name)) {
+    } else if (/\s/.test(formData.full_name)) {
         errors.name = "Name should not contain spaces.";
       }
 
@@ -67,8 +67,8 @@ const Signup = () => {
       setErrors({});
       console.log(formData)
       try{
-        const response = await axios.post(`${config.API_BASE_URL}/auth/signup/`, formData, {
-            withCredentials: false
+        const response = await axios.post(`${devconfig.API_BASE_URL}/register/`, formData, {
+            withCredentials: true
         })
         // localStorage.setItem("user", JSON.stringify({
         //   user_name : response.data.user_name,
@@ -95,8 +95,8 @@ const Signup = () => {
           <input
             type="text"
             id="user_name"
-            name="user_name"
-            value={formData.user_name}
+            name="full_name"
+            value={formData.full_name}
             onChange={handleChange}
             placeholder="Enter your user name"
           />

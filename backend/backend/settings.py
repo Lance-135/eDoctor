@@ -48,6 +48,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -159,6 +160,7 @@ SIMPLE_JWT = {
 # CORS CONFIGURATION 
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
-    'https://e-doctor-livid.vercel.app'
+    'https://e-doctor-livid.vercel.app',
+    'http://localhost:5173'
 ]
 SESSION_COOKIE_SAMESITE = 'None'

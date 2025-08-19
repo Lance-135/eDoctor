@@ -11,8 +11,7 @@ const SignIn = () => {
   const {login} = useContext(AuthContext)
   const navigate = useNavigate()
   const [formData, setFormData] = useState({
-    user_name: "",
-    // email: "",
+    email: "",
     password: "",
   });
 
@@ -28,13 +27,13 @@ const SignIn = () => {
   const validate = () => {
     const errors = {};
 
-    if (!formData.user_name.trim()){
-        errors.name = "Name is required.";
-    } else if (5< formData.user_name.length >20){
-        errors.name = "name must between 5 to 20 characters long"
-    } else if (/\s/.test(formData.user_name)) {
-        errors.name = "Name should not contain spaces.";
-      }
+    // if (!formData.email.trim()){
+    //     errors.name = "Name is required.";
+    // } else if (5< formData.email.length >20){
+    //     errors.name = "name must between 5 to 20 characters long"
+    // } else if (/\s/.test(formData.email)) {
+    //     errors.name = "Name should not contain spaces.";
+    //   }
 
     if (!formData.email) {
       errors.email = "Email is required.";
@@ -45,7 +44,7 @@ const SignIn = () => {
     if (!formData.password) {
       errors.password = "Password is required.";
     } else if (formData.password.length < 8) {
-      errors.password = "Password must be at least 6 characters.";
+      errors.password = "Password must be at least 8 characters.";
     }
 
     return errors;
@@ -64,12 +63,11 @@ const SignIn = () => {
             withCredentials: false  
         })
         console.log(response.data)
-        // localStorage.setItem("user", JSON.stringify({
-        //   user_name : response.data.user_name,
-        //   email : response.data.email,
-        // }))
-        // localStorage.setItem("jwt_token", response.data.jwt_token)
-        login({user_name: response.data.user_name, email: response.data.email, jwt_token: response.data.jwt_token})
+        login({
+          user_name: response.data.full_name, 
+          email: response.data.email, 
+          access_token: response.data.access_token, 
+          refresh_token: response.data.refresh_token})
         setFormData({ user_name: "", email: "", password: "", confirmPassword: "" });
         alert(response.data.email);
         navigate("/home")
@@ -84,7 +82,7 @@ const SignIn = () => {
       <h2>Welcome to Our Platform</h2>
       <p className="signin-description">Log In</p>
       <form onSubmit={handleSubmit} className="signin-form">
-        <div className="form-group">
+        {/* <div className="form-group">
           <label htmlFor="name">User Name</label>
           <input
             type="text"
@@ -95,7 +93,7 @@ const SignIn = () => {
             placeholder="Enter your user name"
           />
           {errors.name && <small className="error">{errors.name}</small>}
-        </div>
+        </div> */}
 
         <div className="form-group">
           <label htmlFor="email">Email</label>

@@ -75,8 +75,11 @@ const Signup = () => {
         //   email : response.data.email,
         // }))
         // localStorage.setItem("jwt_token", response.data.refresh_token)
-        signUp({user_name: response.data.user_name, email: response.data.email, jwt_token: response.data.refresh_token})
-        setFormData({ user_name: "", email: "", password: "", confirmPassword: "" });
+        signUp({user_name: response.data.full_name, 
+          email: response.data.email, 
+          access: response.data.access_token, 
+          response_token : response.data.response_token})
+        setFormData({ full_name: "", email: "", password: "", confirmPassword: "" });
         alert(response.data.email);
         navigate("/home")
       }catch(e){
@@ -94,7 +97,7 @@ const Signup = () => {
           <label htmlFor="name">User Name</label>
           <input
             type="text"
-            id="user_name"
+            id="full_name"
             name="full_name"
             value={formData.full_name}
             onChange={handleChange}

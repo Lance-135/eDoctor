@@ -1,6 +1,7 @@
 // src/context/AuthContext.js
 import axios from 'axios';
 import React, { createContext, useState, useEffect } from 'react';
+import { getAccessToken, getRefreshToken, setAccessToken, setRefreshToken } from './authUtils';
 
 // Create a context
 const AuthContext = createContext();
@@ -8,16 +9,11 @@ const AuthContext = createContext();
 // Create a provider component
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [access_token, setAccessToken] = useState(null)
-  const [refresh_token, setRefreshToken] = useState(null)
 
   useEffect(() => {
     // Check if the user is authenticated by checking localStorage or a token
-    const access_token = localStorage.getItem("access_token");
-    const refresh_token = localStorage.getItem("refresh_token");
+    const access_token = getAccessToken()
     setIsAuthenticated(!!access_token); // Set the authentication state based on localStorage
-    setAccessToken(access_token)
-    setRefreshToken(refresh_token)
   }, []);
 
   const login = ({user_name, email, access_token, refresh_token}) => {
@@ -26,8 +22,8 @@ export const AuthProvider = ({ children }) => {
         user_name : user_name,
         email : email,
       }))
-    localStorage.setItem("access_token", access_token) // accesstoken - sent on every request 
-    localStorage.setItem("refresh_token", refresh_token)
+    setAccessToken(access_token)
+    setRefreshToken(refresh_token)
   };
 
   const signUp = ({user_name, email, access_token, refresh_token})=>{
@@ -36,8 +32,8 @@ export const AuthProvider = ({ children }) => {
         user_name : user_name,
         email : email,
       }))
-    localStorage.setItem("access_token", access_token)
-    localStorage.setItem("refresh_token", refresh_token)
+    setAccessToken(access_token)
+    setRefreshToken(refresh_token)
   };
 
   const logout = () => {
@@ -48,7 +44,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, access_token, refresh_token, login, logout, signUp }}>
+    <AuthContext.Provider value={{ isAuthenticated, access_token, refresh_token, setAccessToken, login, logout, signUp }}>
       {children}
     </AuthContext.Provider>
   );

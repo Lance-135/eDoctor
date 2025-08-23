@@ -7,8 +7,10 @@ from .managers import CustomUserManager
 # Create your models here.
 
 class Prediction(models.Model):
-    user = CharField(max_length=12)
-    image = CharField(max_length=23)
+    user = models.ForeignKey("User", verbose_name=("Author"), on_delete=models.CASCADE)
+    image = CharField(max_length=50)
+    result = CharField(max_length= 10)
+    confidence = models.DecimalField(max_digits= 5, decimal_places= 2, default= 0)
     upload_time = DateTimeField()
 
 # Creating a custom user class

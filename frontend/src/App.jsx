@@ -6,6 +6,7 @@ import Signup from './pages/signup'
 import SignIn from './pages/signin'
 import NavBar from './components/navBar'
 import { AuthProvider } from './AuthContext'
+import UserProfile from './pages/userProfile'
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
             <Route path="/home" element={<Home />} />
             <Route path="/signin" element={<SignIn />} />
             <Route path = "/signup" element = {<Signup/>}/>
+            <Route path = "/profile" element = {<UserProfile/>}/>
           </Routes>
         </main>
       </div>

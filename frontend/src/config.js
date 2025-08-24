@@ -7,4 +7,4 @@ const devconfig = {
 //     API_BASE_URL : "https://edoctor.onrender.com"
 // }
 
-export default devconfig;
+export default devconfig

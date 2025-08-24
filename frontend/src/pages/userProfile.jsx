@@ -22,6 +22,7 @@ const UserProfile = () => {
             use_axios.get("/user/profile/").then((res)=>{
             setUserData(res.data.user)
             setLoading(false)
+            console.log(res.data.user['full_name'])
         })
         }
     }, []);

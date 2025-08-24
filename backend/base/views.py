@@ -1,20 +1,33 @@
 from email import message
 from email.policy import strict
+from functools import cache
 from http import HTTPStatus
+from urllib import request
 from rest_framework import viewsets, permissions, views, response, status
+from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from .models import User, Prediction
 from .serializers import PredictionSerializer, UserSerializer
 from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
+from django.views.decorators.cache import cache_page
+from django.utils.decorators import method_decorator
+
 
 class UserViewset(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAuthenticated]
 
-    # restricting the queryset 
-    def get_queryset(self):
-        return User.objects.filter(id  = self.request.user.id)
+    # # restricting the queryset 
+    # def get_queryset(self):
+    #     return User.objects.filter(id  = self.request.user.id)
+
+    @action(methods=['get'], detail= False, url_path='profile')
+    def profile(self, request):
+        serializer = self.get_serializer(self.request.user)
+        print(serializer.data)
+        res = response.Response({'user': serializer.data}, status= status.HTTP_200_OK)
+        return res
 
 class PredictionViewset(viewsets.ModelViewSet):
     queryset = Prediction.objects.all()

@@ -12,8 +12,11 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta
+from pickle import TRUE
 from decouple import config
 import dj_database_url
+import django
+import django.core
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -88,7 +91,17 @@ DATABASES = {
 
     'default':dj_database_url.parse(NEON_DATABASE_URL, ssl_require= True)
 }
+REDIS_PASSWORD= config('REDIS_PASSWORD')
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+        'LOCATION': 'redis://default:ZNnFT9OlwtxKeJ0A3azRMkYgoCEnI4wp@redis-12920.c301.ap-south-1-1.ec2.redns.redis-cloud.com:12920',
+        'OPTIONS': {
+        }
+
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators

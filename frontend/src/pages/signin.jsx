@@ -4,7 +4,7 @@ import "../css/signin.css"; // For styling, add a CSS file
 import axios from "axios";
 import {useNavigate, Link} from "react-router-dom";
 import AuthContext from "../AuthContext";
-import config from "../config";
+import devconfig from "../config";
 
 const SignIn = () => {
   // State variables for form inputs
@@ -26,14 +26,6 @@ const SignIn = () => {
   // Validate form data
   const validate = () => {
     const errors = {};
-
-    // if (!formData.email.trim()){
-    //     errors.name = "Name is required.";
-    // } else if (5< formData.email.length >20){
-    //     errors.name = "name must between 5 to 20 characters long"
-    // } else if (/\s/.test(formData.email)) {
-    //     errors.name = "Name should not contain spaces.";
-    //   }
 
     if (!formData.email) {
       errors.email = "Email is required.";
@@ -59,17 +51,15 @@ const SignIn = () => {
     } else {
       setErrors({});
       try{
-        const response = await axios.post(`${config.API_BASE_URL}/auth/login/`, formData, {
-            withCredentials: false  
+        const response = await axios.post(`${devconfig.API_BASE_URL}/auth/login/`, formData, {
+            withCredentials: true
         })
         console.log(response.data)
         login({
-          user_name: response.data.full_name, 
-          email: response.data.email, 
-          access_token: response.data.access_token, 
-          refresh_token: response.data.refresh_token})
-        setFormData({ user_name: "", email: "", password: "", confirmPassword: "" });
-        alert(response.data.email);
+          access_token: response.data.access, 
+          refresh_token: response.data.refresh})
+        setFormData({email: "", password: "", confirmPassword: "" });
+        alert("login successful");
         navigate("/home")
       }catch(e){
         alert(e.data)

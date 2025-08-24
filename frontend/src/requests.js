@@ -3,13 +3,13 @@ import devconfig from "./config";
 import { getAccessToken, getRefreshToken, setAccessToken } from "./authUtils";
 
 
-const api = axios.create({
+export const use_axios = axios.create({
     baseURL: devconfig.API_BASE_URL, 
     withCredentials: true
 }
 );
 
-api.interceptors.request.use(
+use_axios.interceptors.request.use(
     (config)=>{
         const access_token = getAccessToken()
         if (access_token){
@@ -20,7 +20,7 @@ api.interceptors.request.use(
     (error)=>Promise.reject(error)
 );
 
-api.interceptors.response.use(
+use_axios.interceptors.response.use(
     (response) =>response, 
     async (error) =>{
         const original_request = error.config;
@@ -29,9 +29,9 @@ api.interceptors.response.use(
 
             try {
                 const refresh_token = getRefreshToken()
-                const refresh_response = await axios.post(`${devconfig.API_BASE_URL}/refresh/`, {refresh: refresh_token})
-                
+                const refresh_response = await axios.post(`${devconfig.API_BASE_URL}/auth/refresh/`, {refresh: refresh_token})
                 const new_access_token = refresh_response.data.access
+                console.log(new_access_token)
                 setAccessToken(new_access_token)
 
                 // now retry with the new access token 
@@ -44,3 +44,5 @@ api.interceptors.response.use(
         return Promise.reject(error)
     }
 )
+
+export default use_axios

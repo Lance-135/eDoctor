@@ -2,21 +2,22 @@
 import React, { useState, useEffect, useContext } from 'react';
 import './navBar.css'; // Fix the import path
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import AuthContext from '../AuthContext';
-import config from '../config.js'
+import { getRefreshToken } from '../authUtils.js';
+import use_axios from '../requests.js';
 
 const NavBar = () => {
   const {isAuthenticated, logout} = useContext(AuthContext)
   const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const handleLogout = async () => {
-    const jwt_token = localStorage.getItem("jwt_token")
+    console.log(isAuthenticated)
+    const refresh_token = getRefreshToken()
     try {
-      await axios.post(`${config.API_BASE_URL}/auth/logout/`, {"jwt_token": jwt_token}, {
+      await use_axios.post(`/auth/logout/`, {"refresh_token": refresh_token}, {
         withCredentials: true
       });
-      // localStorage.clear();
+      localStorage.clear();
       logout();
       navigate("/");
     } catch (error) {

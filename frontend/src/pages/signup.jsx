@@ -5,6 +5,7 @@ import axios from "axios";
 import {useNavigate, Link} from "react-router-dom";
 import AuthContext from "../AuthContext";
 import devconfig from "../config";
+import {use_axios} from "../requests";
 
 const Signup = () => {
   // State variables for form inputs
@@ -65,9 +66,8 @@ const Signup = () => {
       setErrors(validationErrors);
     } else {
       setErrors({});
-      console.log(formData)
       try{
-        const response = await axios.post(`${devconfig.API_BASE_URL}/register/`, formData, {
+        const response = await use_axios.post(`/register/`, formData, {
             withCredentials: true
         })
         // localStorage.setItem("user", JSON.stringify({
@@ -75,10 +75,11 @@ const Signup = () => {
         //   email : response.data.email,
         // }))
         // localStorage.setItem("jwt_token", response.data.refresh_token)
+        console.log(response.data)
         signUp({user_name: response.data.full_name, 
           email: response.data.email, 
-          access: response.data.access_token, 
-          response_token : response.data.response_token})
+          access_token: response.data.access_token, 
+          refresh_token : response.data.refresh_token})
         setFormData({ full_name: "", email: "", password: "", confirmPassword: "" });
         alert(response.data.email);
         navigate("/home")

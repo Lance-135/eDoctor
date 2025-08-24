@@ -16,12 +16,12 @@ export const AuthProvider = ({ children }) => {
     setIsAuthenticated(!!access_token); // Set the authentication state based on localStorage
   }, []);
 
-  const login = ({user_name, email, access_token, refresh_token}) => {
+  const login = ({access_token, refresh_token}) => {
     setIsAuthenticated(true);
-    localStorage.setItem("user", JSON.stringify({
-        user_name : user_name,
-        email : email,
-      }))
+    // localStorage.setItem("user", JSON.stringify({
+    //     user_name : user_name,
+    //     email : email,
+    //   }))
     setAccessToken(access_token)
     setRefreshToken(refresh_token)
   };
@@ -44,7 +44,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, access_token, refresh_token, setAccessToken, login, logout, signUp }}>
+    <AuthContext.Provider value={{ isAuthenticated, setAccessToken, login, logout, signUp }}>
       {children}
     </AuthContext.Provider>
   );

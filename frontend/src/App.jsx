@@ -7,6 +7,7 @@ import SignIn from './pages/signin'
 import NavBar from './components/navBar'
 import { AuthProvider } from './AuthContext'
 import UserProfile from './pages/userProfile'
+import { Toaster } from 'react-hot-toast'
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
         </main>
       </div>
       </Router>
+      <Toaster position="bottom-right" reverseOrder={false} />
     </AuthProvider>
   )
 }

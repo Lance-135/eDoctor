@@ -1,7 +1,7 @@
 // src/context/AuthContext.js
 import axios from 'axios';
 import React, { createContext, useState, useEffect } from 'react';
-import { getAccessToken, getRefreshToken, setAccessToken, setRefreshToken } from './authUtils';
+import { getAccessToken, getRefreshToken, setAccessToken, setRefreshToken, remove_tokens} from './authUtils';
 
 // Create a context
 const AuthContext = createContext();
@@ -39,8 +39,7 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     setIsAuthenticated(false);
     localStorage.removeItem("user");
-    localStorage.removeItem("access_token");
-    localStorage.removeItem("refresh_token")
+    remove_tokens()
   };
 
   return (

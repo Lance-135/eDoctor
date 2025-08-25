@@ -15,5 +15,11 @@ const setRefreshToken = (new_token)=>{
     localStorage.setItem("refresh_token", new_token)
 }
 
+const remove_tokens = ()=>{
+    localStorage.removeItem('access_token')
+    localStorage.removeItem('refresh_token')
+}
 
-export {getAccessToken, getRefreshToken, setAccessToken, setRefreshToken}
+
+export {getAccessToken, getRefreshToken, setAccessToken, setRefreshToken, remove_tokens
+}

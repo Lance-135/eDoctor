@@ -5,11 +5,14 @@ import axios from "axios";
 import {useNavigate, Link} from "react-router-dom";
 import AuthContext from "../AuthContext";
 import devconfig from "../config";
+import LoadingCircle from "../components/loadingCircle";
+import toast from "react-hot-toast";
 
 const SignIn = () => {
   // State variables for form inputs
   const {login} = useContext(AuthContext)
   const navigate = useNavigate()
+  const [isLoading, setLoading] = useState(false)
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -45,6 +48,7 @@ const SignIn = () => {
   // Handle form submission
   const handleSubmit =async (e) => {
     e.preventDefault();
+    setLoading(true)
     const validationErrors = validate();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
@@ -54,21 +58,25 @@ const SignIn = () => {
         const response = await axios.post(`${devconfig.API_BASE_URL}/auth/login/`, formData, {
             withCredentials: true
         })
-        console.log(response.data)
         login({
           access_token: response.data.access, 
           refresh_token: response.data.refresh})
         setFormData({email: "", password: "", confirmPassword: "" });
-        alert("login successful");
+        toast.success("Login Successful")
+        setLoading(false)
         navigate("/home")
       }catch(e){
-        alert(e.data)
+        toast.error(e.response.data.detail)
+        setLoading(false)
       }
    }
   };
 
   return (
-    <div className="signin-container">
+    <div>
+      {
+        isLoading ? <LoadingCircle width= '12' height='12'/> : 
+        <div className="signin-container">
       <h2>Welcome to Our Platform</h2>
       <p className="signin-description">Log In</p>
       <form onSubmit={handleSubmit} className="signin-form">
@@ -113,6 +121,8 @@ const SignIn = () => {
         <button type="submit" className="signin-btn">Login</button>
       </form>
       <p className="signin-footer">Don't have an account? <Link to="/">Signup here</Link></p>
+      </div>
+      }
     </div>
   );
 };

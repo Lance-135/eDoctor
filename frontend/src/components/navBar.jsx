@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import AuthContext from '../AuthContext';
 import { getRefreshToken } from '../authUtils.js';
 import use_axios from '../requests.js';
+import toast from 'react-hot-toast';
 
 const NavBar = () => {
   const {isAuthenticated, logout} = useContext(AuthContext)
@@ -19,8 +20,10 @@ const NavBar = () => {
       });
       localStorage.clear();
       logout();
+      toast.success('Logout Successful')
       navigate("/");
     } catch (error) {
+      toast.error(error.response.data.detail)
       console.error("Logout error:", error);
     }
   };

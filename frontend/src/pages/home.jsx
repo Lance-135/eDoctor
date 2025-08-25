@@ -2,12 +2,13 @@ import React, { useEffect } from 'react';
 import '../css/home.css'
 import axios from "axios";
 import Cookies from 'js-cookie';
-import config  from '../config';
+import devconfig from '../config';
 
 const Home = () => {
   const [imagePreview, setImagePreview] = React.useState(null);
   const [image, setImage]  = React.useState(null);
   const [response, setResponse] = React.useState(null);
+
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -28,7 +29,7 @@ const Home = () => {
     formData.append('image', image);
 
     try {
-      const response = await axios.post(`${config.API_BASE_URL}/pnDetection/predict/`, formData, {
+      const response = await axios.post(`${devconfig.API_BASE_URL}/pnmodel/predict/`, formData, {
         withCredentials: true, 
       });
       setResponse(response.data.prediction); 

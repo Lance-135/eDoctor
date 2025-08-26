@@ -14,7 +14,8 @@ class UserSerializer(serializers.ModelSerializer):
         return User.objects.create_user(**validated_data)
     
 class PredictionSerializer(serializers.ModelSerializer):
-    class meta: 
+    class Meta: 
         model = Prediction
         fields = '__all__'
+        read_only_fields = ['user']
         

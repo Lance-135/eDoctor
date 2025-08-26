@@ -34,6 +34,10 @@ class PredictionViewset(viewsets.ModelViewSet):
     serializer_class = PredictionSerializer
     permission_classes = [permissions.IsAuthenticated]
 
+    # Modifying perform_create to automatically include user
+    def perform_create(self, serializer):
+        serializer.save(user= self.request.user)
+
 # Separate view for register
 class RegisterView(views.APIView):
     

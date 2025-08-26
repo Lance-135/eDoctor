@@ -21,8 +21,13 @@ def predict(request):
     if request.FILES.get('image'): 
         image = request.FILES['image']
         result = predictImage(image)[0][0] 
-        probability = result * 100
-        return response.Response({"prediction" : f"Probability of Pneumonia: {probability: 0.2f}%"}, status=status.HTTP_200_OK )
+        probability = result * 100 if (result*100) >=50 else (1-result)*100
+        Pneumonia = probability >= 50
+        # return response.Response({"prediction" : f"Probability of Pneumonia: {probability: 0.2f}%"}, status=status.HTTP_200_OK )
+        return response.Response({
+            "pneumonia_status": Pneumonia, 
+            "pneumonia_probability": probability
+        }, status=status.HTTP_200_OK )
     else:
         return response.Response({'error': "invallid request"}, status = status.HTTP_400_BAD_REQUEST)
 
@@ -41,8 +46,5 @@ def predictImage(image):
         img_array = np.array(img)/255 # normalizing values as the model was trained on normalized data 
         img_array = img_array.reshape((256,256,1)) 
         img_array = np.expand_dims(img_array, axis= 0)
-        print(img_array.shape)
         result = model.predict(img_array)
-        # result = [[20]]
-        print(result)
         return result

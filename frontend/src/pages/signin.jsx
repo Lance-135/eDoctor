@@ -75,7 +75,7 @@ const SignIn = () => {
   return (
     <div>
       {
-        isLoading ? <LoadingCircle width={'8'} height={'8'} /> : 
+        isLoading ? <LoadingCircle width={'w-8'} height={'h-8'} /> : 
         <div className="signin-container">
       <h2>Welcome to Our Platform</h2>
       <p className="signin-description">Log In</p>

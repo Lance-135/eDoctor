@@ -1,13 +1,20 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import '../css/home.css'
 import axios from "axios";
 import Cookies from 'js-cookie';
 import devconfig from '../config';
+import use_axios from '../requests';
+import toast from 'react-hot-toast';
+import AuthContext from '../AuthContext';
 
 const Home = () => {
+  const {uid} = useContext(AuthContext)
   const [imagePreview, setImagePreview] = React.useState(null);
   const [image, setImage]  = React.useState(null);
-  const [response, setResponse] = React.useState(null);
+  const [prediction_result, setPredictionResult] = React.useState(null);
+  const [pneumonia_status, setPneumoniaStatus] = React.useState(false);
+  const [probability, setProbability] = React.useState(null)
+  const [isLoading, setLoading] = React.useState(false)
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -21,9 +28,10 @@ const Home = () => {
     }
   };
 
+  // Handle Form submit 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setResponse("Processing...") //placeholder till the actual reponse is received
+    setPredictionResult("Processing...") //placeholder till the actual reponse is received
     // FormData to send the image as a file
     const formData = new FormData();
     formData.append('image', image);
@@ -32,12 +40,40 @@ const Home = () => {
       const response = await axios.post(`${devconfig.API_BASE_URL}/pnmodel/predict/`, formData, {
         withCredentials: true, 
       });
-      setResponse(response.data.prediction); 
+      const {pneumonia_status, pneumonia_probability
+      } = response.data
+      setPneumoniaStatus(pneumonia_status)
+      console.log(pneumonia_probability)
+      setProbability(pneumonia_probability)
+      setPredictionResult(`Pneumonia Status: ${pneumonia_status} Probability: ${probability}`); 
     } catch (error) {
       console.error("Error during prediction:", error);
-      setResponse("Error during prediction");
+      setPredictionResult("Error during prediction");
     }
   };
+
+
+  // Handle Prediction save
+  const handleSave = async (e) =>{
+    e.preventDefault();
+    setLoading(true);
+    if(image == null){
+      toast.error('Cannot save without image')
+    }
+    else{
+      const formData = new FormData()
+      formData.append('image', "image")
+      formData.append('result',`Pneumonia: ${pneumonia_status}`)
+      formData.append('confidence', Number(Number(probability).toFixed(2)))
+      try{
+        const response = await use_axios.post("/prediction/", formData)
+      }
+      catch(e){
+        toast.error(e.response.data.detail)
+      }
+
+    }
+  }
 
   return (
     <div className="min-h-screen flex-col flex bg-gradient-to-br from-white to-blue-50 font-sans">
@@ -80,8 +116,14 @@ const Home = () => {
           >
             Predict
           </button>
+          <button 
+          className='w-full bg-blue-600 hover:bg-gradient-to-l hover:from-teal-500 hover:to-green-500 text-white font-semibold py-2 px-4 rounded-lg transition'
+          onClick={handleSave}
+          >
+          Save Prediction
+          </button>
         </form>
-        <p className="mt-4 text-gray-700">{response}</p>
+        <p className="mt-4 text-gray-700">{prediction_result}</p>
       </div>
 
       {/* Feature 2 */}

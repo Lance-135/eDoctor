@@ -45,7 +45,6 @@ const Home = () => {
       setPneumoniaStatus(pneumonia_status)
       setProbability(pneumonia_probability)
       setPredictionResult(`Pneumonia Status: ${pneumonia_status} Probability: ${pneumonia_probability}`); 
-      console.log(`${probability}`)
       
     } catch (error) {
       console.error("Error during prediction:", error);
@@ -64,10 +63,13 @@ const Home = () => {
     else{
       const formData = new FormData()
       formData.append('image', "image")
-      formData.append('result',`Pn  eumonia: ${pneumonia_status}`)
+      formData.append('result',`Pneumonia: ${pneumonia_status}`)
       formData.append('confidence', Number(Number(probability).toFixed(2)))
       try{
         const response = await use_axios.post("/prediction/", formData)
+        if (response.status == 201){
+          toast.success("Prediction Saved.")
+        }
       }
       catch(e){
         toast.error(e.response.data.detail)

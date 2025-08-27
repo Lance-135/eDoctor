@@ -2,6 +2,7 @@
 import axios from 'axios';
 import React, { createContext, useState, useEffect } from 'react';
 import { getAccessToken, getRefreshToken, setAccessToken, setRefreshToken, remove_tokens} from './authUtils';
+import { jwtDecode } from 'jwt-decode';
 
 // Create a context
 const AuthContext = createContext();
@@ -9,11 +10,16 @@ const AuthContext = createContext();
 // Create a provider component
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [uid, setUid] = useState(null);
 
   useEffect(() => {
     // Check if the user is authenticated by checking localStorage or a token
     const access_token = getAccessToken()
     setIsAuthenticated(!!access_token); // Set the authentication state based on localStorage
+    if(!!access_token){
+      const payload = jwtDecode(access_token)
+      setUid(payload.user_id)
+    }
   }, []);
 
   const login = ({access_token, refresh_token}) => {

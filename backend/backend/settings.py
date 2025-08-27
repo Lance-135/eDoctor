@@ -32,7 +32,9 @@ SECRET_KEY = config('DJANGO_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'e-doctor-gpbm.onrender.com'
+]
 
 
 # Application definition
@@ -184,3 +186,5 @@ CSRF_TRUSTED_ORIGINS = [
     'https://e-doctor-livid.vercel.app',
     'https://e-doctor-gpbm.onrender.com'
 ]
+
+CSRF_COOKIE_SECURE = False

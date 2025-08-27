@@ -43,9 +43,10 @@ const Home = () => {
       const {pneumonia_status, pneumonia_probability
       } = response.data
       setPneumoniaStatus(pneumonia_status)
-      console.log(pneumonia_probability)
       setProbability(pneumonia_probability)
       setPredictionResult(`Pneumonia Status: ${pneumonia_status} Probability: ${probability}`); 
+      console.log(`${probability}`)
+      
     } catch (error) {
       console.error("Error during prediction:", error);
       setPredictionResult("Error during prediction");
@@ -63,7 +64,7 @@ const Home = () => {
     else{
       const formData = new FormData()
       formData.append('image', "image")
-      formData.append('result',`Pneumonia: ${pneumonia_status}`)
+      formData.append('result',`Pn  eumonia: ${pneumonia_status}`)
       formData.append('confidence', Number(Number(probability).toFixed(2)))
       try{
         const response = await use_axios.post("/prediction/", formData)

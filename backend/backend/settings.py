@@ -181,5 +181,6 @@ SESSION_COOKIE_SAMESITE = 'None'
 
 # CSRF CONFIGURATION 
 CSRF_TRUSTED_ORIGINS = [
-    'https://e-doctor-livid.vercel.app'
+    'https://e-doctor-livid.vercel.app',
+    'https://e-doctor-gpbm.onrender.com'
 ]

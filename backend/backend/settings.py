@@ -18,7 +18,6 @@ import dj_database_url
 import django
 import django.core
 
-from e_doctor.e_doctor.settings import CSRF_TRUSTED_ORIGINS
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -181,6 +180,6 @@ CORS_ALLOWED_ORIGINS = [
 SESSION_COOKIE_SAMESITE = 'None'
 
 # CSRF CONFIGURATION 
-CSRF_TRUSTED_ORIGINS[
+CSRF_TRUSTED_ORIGINS = [
     'https://e-doctor-livid.vercel.app'
 ]

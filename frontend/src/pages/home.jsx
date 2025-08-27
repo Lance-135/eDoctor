@@ -44,7 +44,7 @@ const Home = () => {
       } = response.data
       setPneumoniaStatus(pneumonia_status)
       setProbability(pneumonia_probability)
-      setPredictionResult(`Pneumonia Status: ${pneumonia_status} Probability: ${probability}`); 
+      setPredictionResult(`Pneumonia Status: ${pneumonia_status} Probability: ${pneumonia_probability}`); 
       console.log(`${probability}`)
       
     } catch (error) {

@@ -39,7 +39,7 @@ use_axios.interceptors.response.use(
             } catch (error) {
                 console.error(error);
                 remove_tokens()
-                // window.location.href = '/home/'
+                window.location.href = '/home/'
             }
         }
         return Promise.reject(error)

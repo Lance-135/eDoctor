@@ -6,6 +6,8 @@ import {useNavigate, Link} from "react-router-dom";
 import AuthContext from "../AuthContext";
 import devconfig from "../config";
 import {use_axios} from "../requests";
+import toast from 'react-hot-toast';
+import LoadingCircle from "../components/loadingCircle";
 
 const Signup = () => {
   // State variables for form inputs
@@ -19,6 +21,7 @@ const Signup = () => {
   });
 
   const [errors, setErrors] = useState({});
+  const [isLoading, setLoading] = useState(false)
 
   // Handle input change
   const handleChange = (e) => {
@@ -60,37 +63,35 @@ const Signup = () => {
   // Handle form submission
   const handleSubmit =async (e) => {
     e.preventDefault();
-
     const validationErrors = validate();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
     } else {
       setErrors({});
       try{
+        setLoading(true)
         const response = await use_axios.post(`/register/`, formData, {
             withCredentials: true
         })
-        // localStorage.setItem("user", JSON.stringify({
-        //   user_name : response.data.user_name,
-        //   email : response.data.email,
-        // }))
-        // localStorage.setItem("jwt_token", response.data.refresh_token)
-        console.log(response.data)
         signUp({user_name: response.data.full_name, 
           email: response.data.email, 
           access_token: response.data.access_token, 
           refresh_token : response.data.refresh_token})
         setFormData({ full_name: "", email: "", password: "", confirmPassword: "" });
-        alert(response.data.email);
+        toast.success("Login Successful")
+        setLoading(false)
         navigate("/home")
       }catch(e){
-        alert(e)
+        toast.error(e.response.data.detail)
+        setLoading(false)
       }
    }
   };
 
   return (
-    <div className="signup-container">
+    <div>
+      {isLoading ? <LoadingCircle width="w-8" height="h-8"/> : 
+      <div className="signup-container">
       <h2>Welcome to Our Platform</h2>
       <p className="signup-description">Create your account to get started!</p>
       <form onSubmit={handleSubmit} className="signup-form">
@@ -151,6 +152,8 @@ const Signup = () => {
         <button type="submit" className="signup-btn">Create Account</button>
       </form>
       <p className="signup-footer">Already have an account? <Link to="/signIn">Login here</Link></p>
+    </div>
+      }
     </div>
   );
 };
